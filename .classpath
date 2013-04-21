@@ -23,6 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/stanford-classifier-2013-04-04.zip"/>
+	<classpathentry kind="lib" path="lib/stanford-classifier-2.1.8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
