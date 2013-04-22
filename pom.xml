@@ -51,5 +51,10 @@
 			<artifactId>stanford-pos-tagger</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+		<dependency>
+	        <groupId>nz.ac.waikato.cms.weka</groupId>
+	        <artifactId>weka-stable</artifactId>
+	        <version>3.6.6</version>
+        </dependency>
 	</dependencies>
 </project>
