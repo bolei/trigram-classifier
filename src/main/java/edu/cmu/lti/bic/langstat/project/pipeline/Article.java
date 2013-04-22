@@ -19,12 +19,9 @@ public class Article {
 				art.label = tagIn.readLine().equals("1");
 				result.add(art);
 				continue;
+			} else {
+				art.sentences.add(line);
 			}
-			String[] tokens = line.split("\\s+");
-			if (tokens.length < RunPipeline.SENT_MIN_LENGTH) {
-				continue;
-			}
-			art.sentences.add(line);
 		}
 		return result;
 	}
