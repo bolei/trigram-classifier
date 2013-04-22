@@ -42,8 +42,9 @@ public class StanfordCoreNlpDemo {
       CoreMap sentence = sentences.get(0);
       Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
       out.println();
-      out.println("The first sentence parsed is:");
-      tree.pennPrint(out);
+      //out.println("The first sentence parsed is:");
+      //tree.pennPrint(out);
+      
     }
   }
 
