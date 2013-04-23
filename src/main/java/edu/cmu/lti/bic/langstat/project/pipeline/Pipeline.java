@@ -29,11 +29,18 @@ public class Pipeline {
 		}
 	}
 
-	public void startPipeline(BufferedReader dataIn, BufferedReader tagIn)
-			throws IOException {
-		List<Article> artList = Article.loadArticles(dataIn, tagIn);
+	public void startPipeline(BufferedReader dataIn, BufferedReader tagIn,
+			boolean isTraining) throws IOException {
+		// load articles
+		List<Article> artList = Article.loadArticles(dataIn, tagIn, isTraining);
+
+		// extract features
 		for (FeatureExtractor fe : featureExtractors) {
 			fe.extractFeature(artList);
 		}
+
+		// collect features
+		new FeatureCollector().collectFeatures(
+				prop.getProperty("feature.folder"), artList, isTraining);
 	}
 }

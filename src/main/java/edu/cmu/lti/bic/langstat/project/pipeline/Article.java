@@ -5,18 +5,20 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class Article {
-	private boolean label;
+	private String label;
 	private LinkedList<String> sentences = new LinkedList<String>();
 
 	public static LinkedList<Article> loadArticles(BufferedReader dataIn,
-			BufferedReader tagIn) throws IOException {
+			BufferedReader tagIn, boolean isTraining) throws IOException {
 		LinkedList<Article> result = new LinkedList<Article>();
 		String line = null;
 		Article art = null;
 		while ((line = dataIn.readLine()) != null) {
-			if (line.equals("~~~~~")) {
+			if (line.trim().equals("~~~~~")) {
 				art = new Article();
-				art.label = tagIn.readLine().equals("1");
+				if (isTraining == true) {
+					art.label = tagIn.readLine();
+				}
 				result.add(art);
 				continue;
 			} else {
@@ -26,7 +28,7 @@ public class Article {
 		return result;
 	}
 
-	public boolean isLabel() {
+	public String getLabel() {
 		return label;
 	}
 
