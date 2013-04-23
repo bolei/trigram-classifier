@@ -19,7 +19,7 @@ public class RunPipeline {
 						RunPipeline.class.getResourceAsStream(TRAIN_SET)));
 				tagIn = new BufferedReader(new InputStreamReader(
 						RunPipeline.class.getResourceAsStream(TRAIN_SET_TAG)));
-				pipeLine.startPipeline(dataIn, tagIn);
+				pipeLine.startPipeline(dataIn, tagIn, true);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
