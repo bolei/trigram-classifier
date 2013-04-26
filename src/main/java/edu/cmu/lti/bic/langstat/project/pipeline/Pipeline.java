@@ -11,7 +11,7 @@ import edu.cmu.lti.bic.langstat.project.feature.FeatureExtractorFactory;
 
 public class Pipeline {
 	private List<FeatureExtractor> featureExtractors = new LinkedList<FeatureExtractor>();
-	private static Properties prop = new Properties();
+	public static final Properties prop = new Properties();
 	static {
 		try {
 			prop.load(Pipeline.class
@@ -36,11 +36,11 @@ public class Pipeline {
 
 		// extract features
 		for (FeatureExtractor fe : featureExtractors) {
-			fe.extractFeature(artList);
+			fe.extractFeature(artList, isTraining);
 		}
 
 		// collect features
-		new FeatureCollector().collectFeatures(
-				prop.getProperty("feature.folder"), artList, isTraining);
+		// new FeatureCollector().collectFeatures(
+		// prop.getProperty("feature.folder"), artList, isTraining);
 	}
 }
