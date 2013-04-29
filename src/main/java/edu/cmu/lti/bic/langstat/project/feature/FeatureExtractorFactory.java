@@ -8,6 +8,8 @@ public class FeatureExtractorFactory {
 			return new LingpipePosTaggerFeatureExtractor();
 		} else if (name.equalsIgnoreCase("POSTaggerCompareFeatureExtractor")) {
 			return new POSTaggerCompareFeatureExtractor();
+		} else if (name.equalsIgnoreCase("IllegalTagFeatureExtractor")) {
+			return new IllegalTagFeatureExtractor();
 		}
 		return null;
 	}

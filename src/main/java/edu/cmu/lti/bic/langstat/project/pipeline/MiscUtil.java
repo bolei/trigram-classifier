@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import edu.cmu.lti.bic.langstat.project.feature.FeatureExtractor;
-import edu.cmu.lti.bic.langstat.project.feature.LingpipePosTaggerFeatureExtractor;
+import edu.cmu.lti.bic.langstat.project.feature.IllegalTagFeatureExtractor;
 
 public class MiscUtil {
 	public static LinkedList<Article> generateOneSentenceArticle(
@@ -23,15 +23,15 @@ public class MiscUtil {
 		LinkedList<Article> artList = MiscUtil
 				.generateOneSentenceArticle(
 						new String[] {
-								"WELL WHAT EXACTLY IS EDUCATIONAL PROGRAMMING FOR CHILDREN AND HOW MUCH SHOULD BROADCASTERS BE REQUIRED TO AIR"
+								"IT'S A GREAT LINE THAT I RESIGN SCHOOL BUT THE PRESIDENT HIS TAX BILL PASSED DAYS NOW THE PEOPLE IT'S A TRAGEDY TO SEE"
 										.toLowerCase(),
-								"RUSH HOUR SUBWAY COLLISION IN NEW YORK"
+								"AND HE JUST TWO WEEKS AGO WHEN HE WAS ARGUING WITH ONE OF THE TRACK RECORD HE HAS FOUND SOME EVIDENCE THAT THEY BE ALLOWED TO EXPLORE IT SAID THAT HE DID NOT SAY WE'RE NOT GOING TO DETECT SHOWING IT'S SAILING FOR THE RECORD"
 										.toLowerCase(),
 								"YEAH BUT AND GETTING HIS LESSON".toLowerCase(),
 								"SHE THINKS THAT THIS WAS A LETTER OF THE OUTSIDE"
-										.toLowerCase(), }, new String[] { "1",
-								"1", "0", "0" });
-		FeatureExtractor extractor = new LingpipePosTaggerFeatureExtractor();
+										.toLowerCase(), }, new String[] { "0",
+								"0", "0", "0" });
+		FeatureExtractor extractor = new IllegalTagFeatureExtractor();
 		extractor.extractFeature(artList, true);
 	}
 
