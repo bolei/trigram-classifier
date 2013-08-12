@@ -20,6 +20,7 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class PCFGParser {
 	StanfordCoreNLP pipeline = null;
+	TreeMap<String, HashMap<String, Double>> posMap = null;
 	/**
 	 * @param args
 	 */
@@ -211,6 +212,44 @@ public class PCFGParser {
 	    
 	   // System.out.println(worst);
 		return 1.0*sum/5;
+	}
+	double getRelativeLowBaseP(String s){
+		s = s.toLowerCase();
+		Annotation document = new Annotation(s);
+	    pipeline.annotate(document);
+	    List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+	    Tree t =sentences.get(0).get(TreeAnnotation.class);
+	    List<Tree> list = t.getLeaves();
+	    double min = 1.1;
+	    String worst = "";
+	    for(Tree tt:list){
+	    	Tree pos = tt.ancestor(1, t);
+	    	
+	    	HashMap<String, Double> pmap = this.posMap.get(tt.toString());
+	    	if(pmap==null){
+	    		continue;
+	    	}
+	    	if(pmap.get(pos.label().value())==null)
+	    		continue;
+	    	double current = pmap.get(pos.label().value());
+	    	double max = 0;
+	    	String maxString = ""
+;	    	for(String key:pmap.keySet()){
+	    		if(pmap.get(key)>max){
+	    			max = pmap.get(key);
+	    			maxString = key;
+	    		}
+	    	}
+	    	
+	    	//System.out.println(tt.toString()+" "+current+" "+pos.label().value()+" "+max+" "+maxString);
+	    	double ratio = current/max;
+	    	if(ratio<min){
+	    		min = ratio;
+	    		worst = pos.toString();
+	    	}
+	    }
+	    //System.out.println(worst);
+		return min;
 	}
 	
 

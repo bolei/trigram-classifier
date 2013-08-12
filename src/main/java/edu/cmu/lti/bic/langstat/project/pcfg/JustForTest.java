@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import edu.cmu.lti.bic.langstat.project.pipeline.Article;
 import edu.cmu.lti.bic.langstat.project.pipeline.Pipeline;
 import edu.cmu.lti.bic.langstat.project.pipeline.RunPipeline;
+import edu.cmu.lti.bic.langstat.project.similar.Similarity;
 import edu.stanford.nlp.pipeline.*;
 
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
@@ -46,7 +47,9 @@ public class JustForTest {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		trainPOS();
+		collectRLowBaseP();
+		//getSelfSimilarity();
+		//trainPOS();
 		//collectLowP();
 		//getAllTokenNum();
 		//getPandCount();
@@ -237,6 +240,91 @@ public class JustForTest {
 		out2.close();
 		
 	}
+	static void  collectRLowBaseP() throws IOException, ClassNotFoundException{
+		BufferedReader dataIn = null, tagIn = null;
+		dataIn = new BufferedReader(new InputStreamReader(RunPipeline.class.getResourceAsStream(TRAIN_SET)));
+		tagIn = new BufferedReader(new InputStreamReader(RunPipeline.class.getResourceAsStream(TRAIN_SET_TAG)));
+		
+		FileWriter fstream = new FileWriter("out1.2.txt");
+		FileWriter fstream2 = new FileWriter("out2.txt");
+		BufferedWriter out = new BufferedWriter(fstream);
+		BufferedWriter out2 = new BufferedWriter(fstream2);
+		
+		PCFGParser p = new PCFGParser();
+		FileInputStream fin = new FileInputStream("data/posP.ob");
+		   ObjectInputStream ois = new ObjectInputStream(fin);
+		   p.posMap =  (TreeMap<String, HashMap<String, Double>>) ois.readObject();;
+		   ois.close();
+		List<Article> artList = Article.loadArticles(dataIn, tagIn, true);
+		System.out.println("done");
+		int count = 0;
+		for(Article a:artList){
+			double score = 0;
+			for(String s:a.getSentences()){
+				s= s.replaceFirst("<s>", "");
+				s= s.replaceFirst("</s>", ".");
+				s= s.toLowerCase();
+				int numOfWords = s.split(" +").length;
+				//System.out.print(s);
+				double tmp = p.getScore(s);
+				//score+=tmp;
+				System.out.println(tmp+ " "+a.getLabel());
+				
+				//double tmp = p.getAllPos(s)/numOfWords;
+				//System.out.println(s);
+				//System.out.println(tmp+" "+a.getLabel());
+				//sSystem.out.println(score+" "+numOfWords);
+				//out.write(tmp+" ");
+			}
+			//out.newLine();
+			String toConsole = score/a.getSentences().size()+" "+a.getLabel();
+			//System.out.println(toConsole);
+			out2.newLine();
+		}
+		out.close();
+		out2.close();
+		
+	}
+	static void  getSelfSimilarity() throws IOException{
+		BufferedReader dataIn = null, tagIn = null;
+		dataIn = new BufferedReader(new InputStreamReader(RunPipeline.class.getResourceAsStream(TRAIN_SET)));
+		tagIn = new BufferedReader(new InputStreamReader(RunPipeline.class.getResourceAsStream(TRAIN_SET_TAG)));
+		
+		FileWriter fstream = new FileWriter("out1.2.txt");
+		FileWriter fstream2 = new FileWriter("out2.txt");
+		BufferedWriter out = new BufferedWriter(fstream);
+		BufferedWriter out2 = new BufferedWriter(fstream2);
+		Similarity semi = new Similarity();
+		List<Article> artList = Article.loadArticles(dataIn, tagIn, true);
+		System.out.println("done");
+		int count = 0;
+		for(Article a:artList){
+			double score = 0;
+			for(String s:a.getSentences()){
+				s= s.replaceFirst("<s>", "");
+				s= s.replaceFirst("</s>", ".");
+				int numOfWords = s.split(" +").length;
+				if(numOfWords<3)
+					continue;
+				double tmp = semi.getSelfMaxSimilarity(s);
+				System.out.print(s);
+				System.out.println(tmp+ " "+a.getLabel());
+				
+				//double tmp = p.getAllPos(s)/numOfWords;
+				//System.out.println(s);
+				//System.out.println(tmp+" "+a.getLabel());
+				//sSystem.out.println(score+" "+numOfWords);
+				//out.write(tmp+" ");
+			}
+			//out.newLine();
+			//String toConsole = score/a.getSentences().size()+" "+a.getLabel();
+			//System.out.println(toConsole);
+			out2.newLine();
+		}
+		out.close();
+		out2.close();
+		
+	}
 	
 	static public void getPandCount() throws IOException{
 		BufferedReader dataIn = null, tagIn = null;
@@ -311,6 +399,7 @@ public class JustForTest {
 			count++;
 			s= s.replaceFirst("<s>", "");
 			s= s.replaceFirst("</s>s", "");
+			s=s.toLowerCase();
 			posTrain.check(s);
 			s = br.readLine();
 			
